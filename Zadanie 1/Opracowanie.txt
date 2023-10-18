@@ -1,0 +1,62 @@
+ZADANIE N1
+
+Odpowiedź a) wynik = 1.400781361
+Odpowiedź b) = 575,5
+
+Ad.1) Jako N przyjąłem liczbę 20. Jest to dyktowane tym że wraz z kolejnymi przejściami pętli dostajemy coraz to dokładniejsze 
+rozwinięcie wyniku. Ostatnie przejścia pętli dają już tak niewielkie wyniki że dodając 21 przejście zmiana nie mieści się już w 
+obszarze 10 cyfr znaczących. Z tego względu wystatrczy przejść przez pętle 20 razy.
+
+Ad.2) Żeby zaoszczędzić w programie na dodatkowych obliczeniach, postanowiłem wykorzystać wzór do obliczania sumy kątów sinusa i cosinusa.
+Dzięki temu zamiast 20 razy wywoływać funkcje sin i cos, wywołujemy je tylko 4 razy. Raz dla sin(0) i sin(1) oraz po raz dla cos(0) i cos(1).
+
+---------------------
+double cos0 = cos(0); //wywołanie dla cos = 0
+double cos1 = cos(wartosc_x); //wywołanie dla cos = 1
+double sin0 = sin(0); //wywołanie dla sin = 0
+double sin1 = sin(wartosc_x); //wywołanie dla sin = 1
+---------------------
+
+Potrzebujemy te konkretne wartości dla pierwszych dwóch wywołań funkcji (dla n=0 i n=1).Za ich pomocą jestesmy w stanie otrzymać wszystkie kolejne wartości sinusa i cosinusa.
+
+Wywołujemy również exponente od (-1*n). Jest to podyktowane tym że w funkcji musimy użyć dwóch exponent, jednej dla exp(-n) i drugiej dla exp(-4n). Tutaj pojawia się kolejna 
+oszczędnośc, ponieważ wystartczy że dla drugiego przypadku exp(-4*n) zapiszemy jako 4 kolejne mnożenia exp(-n)
+
+Następnie "ręcznie" wykonujemy obliczenia dla n=0 i n=1 :
+
+-------------------------------------------
+wynik += cos0; //dodajemy wartosci dla n = 0
+wynik += sin1*sin1*expon + cos1*expon*expon*expon*expon; //dodajemy wartości dla n = 1
+-------------------------------------------
+
+Jest to podyktowane kolejną oszczędnością poniważ funkcja dla n=0 będzie wynosiła jedynie cos(0) a w przypadku n=1
+posiadamy już wartości dla sin i cos więc nie wywołujemy własnej funkcji do ich obliczenia.
+
+Nastepnie jako że pętle będziemy zaczynać od n=2 musimy nadać nowe wartości dla sinusa i cosinusa.
+
+-------------------------------------------
+cos0 = cos1;
+sin0 = sin1;
+-------------------------------------------
+
+Pętla for rozpoczyna się dla n = 2 i idzie aż do n = 20. Za każdym jej przejściem wywołujemy własne zmienne sinus oraz cosinus które 
+korzystają z zależności trygonometrycznych dla sumy kątów. Po zwiększeniu wyniku o kolejne przejście pętli musimy podmienić kąty dla cos i sin.
+cos1 i sin1 otrzymują wartości poprzednio otrzymanego sinusa i cosinusa, a sin0 i cos0 ciągle "trzymają" wartość sin(1) i cos(1). Dzięki temu 
+otrzymujemy efekt sin(n+1) i cos(n+1). Podobne działanie wykonujemy na exponencie, dodawanie do zmiennej expon_pom mnożenia expon_pom*expon daje nam efekt
+exponenty dla (n+1). Program po przejściu całej pętli for wypisuje wynik z 10 cyframi znaczącymi.
+
+------------------------------------------
+  for(int i=2;i<=20;i++){
+
+        sinus = sin0*cos1 + sin1*cos0;  //wykorzystujemy zależności trygonometryczne dla sumy kątów dla sin
+        cosinus = cos0*cos1 - sin0*sin1; //wykorzystujemy zależności trygonometryczne dla sumy kątów dla cos
+
+        wynik += (sinus*sinus*expon_pom) + (cosinus*expon_pom*expon_pom*expon_pom*expon_pom); //obliczanie sumy z użyciem własnych zmiennych 
+
+        cos1 = cosinus; //zamiana cos na kolejne iteracje
+        sin1 = sinus; //zamiana sin na kolejne iteracje 
+        expon_pom *= expon; //zwiększanie exponenty na kolejne iteracje
+    } 
+    printf("%.9f",wynik);
+------------------------------------------
+
