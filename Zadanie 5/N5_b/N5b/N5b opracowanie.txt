@@ -1,0 +1,37 @@
+ZADANIE N5 pkt b)
+
+W programie rozwiązujemy układ równań w sposób iteracyjny.
+
+- N = 1001
+- h = 1 / (N-1)
+- 3u1 + 4u2 - u3 = 0
+--------------------------
+
+Program jest dość prosty. Do obliczeń używamy:
+
+    double results[N] - tablica o rozmiarze N = 1001 do której zapisujemy wyniki
+    double h = 0.001 - zmienna h o wartości zadanej w zadaniu 
+    double h2 = h*h + 2 - zmienna h2 której będziemy używac w dalszej części programu 
+------------------------------------------
+ Obliczamy "ręcznie" pierwsze trzy pozycje tablicy: 
+
+    results[0] = 1;
+    results[1] = 2 / (2 - h*h);
+    results[2] = 4 * results[2] - 3;
+
+-------------------------------------------
+    Następnie zaczynając od 3 pozycji tablicy wykonujemy pętle for która tworzy pozycję results[i] za pomocą mnożenia poprzedniego elementu * h2 przez - element[i - 2]:
+
+    for(int i = 3; i < N ; i++){
+        results[i] = results[i - 1] * h2 - results[i - 2];
+    }
+------------------------------------------
+Za pomocą ostatniej pętli wypisujemy wyniki:
+
+for(int i = 0 ; i < N ; i++){
+        fprintf (file," %i %.16lf %.16lf \n",i+1 ,i*h, results[i] );
+    }
+------------------------------------------
+
+Złożoność obliczeniowa kodu to O(n) jeśli nie wliczamy wypisywania wyników. Wykres wyników zapisany jest w pliku "wynikb.gp". Przekształcenia zawarte są w pliku pdf.
+                                                                                                

@@ -1,0 +1,57 @@
+ZADANIE N5 pkt a)
+
+W programie należy rozwiązać układ równań z danymi zadanymi w macierzy:
+
+- N = 1001
+- h = 1 / (N-1)
+
+---------------------
+Dla ułatwienia obliczeń zapisujemy układ równań jako macierz. Sposób zapisu podaje w dokumencie "macierz.pdf"
+--------------------------
+
+W programie będziemy korzystać z tego samego kodu wykorzystującego algorytm Thomasa co w zadaniach N3 oraz N4
+
+    double d[N] = {0.0};
+    double c[N - 1];
+    double u[N];
+    double x[N];
+    double diagonal = H * H + 2;
+
+    Zmienne pozostają tak samo jak w poprzednich programach. Jedyna zmiana to zmienna diagonal której używam do przechowywania wartości na diagonali.
+
+--------------------------
+Dokładny opis algorytmu Thomasa zastosowanego w programie znajduję się w zadaniu N3. W N5 zastosowałem tylko inne zmienne i wywołałem go jednokrotnie
+------------------------------------------
+ /*Zapełnianie macierzy wyników*/
+    d[0] = 1;
+    d[N - 1] = 1;
+ /*--------------------------------*/
+    c[0] = 0;
+    d[0] = d[0] / diagonal;
+
+    for ( int i = 1; i < N - 1; i++){
+        if(i < N - 1){
+
+        c[i] = -1/(diagonal + c[i-1]);
+
+        }
+        d[i] = (d[i] + d[i-1]) / (diagonal + c[i-1]);
+    }
+
+    u[N - 1] = d[N - 1];
+
+    for(int i = N-2 ; i >= 0; i--){
+        u[i] = d[i] - c[i] * u[i+1];
+    }
+
+    for(int i = 0 ; i < N ; i++){
+        x[i] = i*H;
+        fprintf (fpwynik1," %i %.16lf %.16lf \n",i+1 ,i*H, u[i] ); 
+    }
+
+    Powyżej wklejam kod implementujący algorytm Thomasa. Pierwsze linijki to wypełnianie wartości "wyjątkowych" tj. jedynek dla pierwszej i ostatniej pozycji wektora z odpowiedziami.
+------------------------------------------
+
+Złożoność obliczeniowa kodu to O(n) a dokładniej O(2n) jeśli nie wliczamy wypisywania wyników. Rozpatrzenie tego programu jako szukanie rozwiązania dla macierzy trójdiagonalnej jest najszybszym 
+sposobem na jaki wpadłem.
+                                                                                                

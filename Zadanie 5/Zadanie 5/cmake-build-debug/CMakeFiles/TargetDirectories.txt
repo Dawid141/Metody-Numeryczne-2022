@@ -1,0 +1,3 @@
+C:/Users/Aslave2137/Desktop/Nauka/Numerki/Zadanie 5/Zadanie 5/cmake-build-debug/CMakeFiles/Zadanie_5.dir
+C:/Users/Aslave2137/Desktop/Nauka/Numerki/Zadanie 5/Zadanie 5/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/Aslave2137/Desktop/Nauka/Numerki/Zadanie 5/Zadanie 5/cmake-build-debug/CMakeFiles/rebuild_cache.dir

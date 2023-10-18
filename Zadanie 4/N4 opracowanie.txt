@@ -1,0 +1,54 @@
+ZADANIE N4
+
+W programie należy rozwiązać układ równań z danymi zadanymi w macierzy:
+
+- h = 2/N
+- f(x) = 1/ (1 + 25x^2)
+- fk = f(xk)
+- xk = -1 +k*h
+
+Dla N = 1000 , ale macierz jest macierzą prawie trójdiagonalną
+
+---------------------
+Używając funkcji data obliczamy f(x):
+
+double data (int k){
+    double x = -1 + k*H;
+    return  (1/(1+(25* x*x))); 
+} 
+--------------------------
+W programie mamy zastosować wzór Shermana-Morrisona. Korzystając z wiedzy z wykładu zapisujemy naszą macierz jako sumę macierzy trójdiagonalnej i ilorazu dwóch wektorów. Zastosowane przekształcenia 
+są zawarte w pliku "Przekształcenia.pdf"
+--------------------------
+W programie wykorzystałem algorytm Thomasa. Bazowałem się na rozpisce algorytmu dostępnej na wikipedii, stąd następujące zmienne:
+
+
+    double matrix_w[N - 1] = {}; macierz niewiadomych 
+    double vector_z[N - 1] = {}; - wektor niewiadomych do Az = b;
+    double vector_q[N - 1] = {}; - wektor niewiadomych do Aq = u;
+    double vector_u[N - 1] = {0.0}; wektor niewiadomych do Aq = u;
+    double matrix_c[N - 2] = {0.0}; wektor do zastosowania algorytmu thomasa
+    double matrix_wyn[N - 1] = {}; macierz wyrazów wolnych 
+    double div; - dzielnik używany do obliczania ostatecznego wyniku
+    double scalar ; - licznik używany do obliczania ostatecznego wyniku
+
+--------------------------
+Dokładny opis algorytmu Thomasa zastosowanego w programie znajduję się w zadaniu N3. W N4 zastosowałem tylko inne zmienne i wywołałem go dwukrotnie 
+------------------------------------------
+Ręczne wpisanie pierwszych wartości dla licznika i dzielnika:
+
+scalar = vector_z[0] + vector_z[N - 2];
+div = 1 + vector_q[0] + vector_q[N - 2];
+------------------------------------------
+Pętla wypełniająca wektor wyników kolejnymi wartościami działania z- (v^T * z) / 1 + v^T * q) (v^T oznacza transpozycje)
+
+    for(i = 0; i< N-1; i++){
+        vector_q[i] = vector_q[i] * scalar / div;
+        matrix_wyn[i] = vector_z[i] - vector_q[i];
+    }
+------------------------------------------
+
+Używając wzoru Shermana - Morrisona do przekształcenia macierzy "oszczędzamy" bardzo dużo na obliczeniach. Z tego co byłem w stanie znaleźć w sieci normalne obliczanie macierzy odwrotnej kosztuje
+nas O(n^3) obliczeń. Dzięki przekształceniu program wykonuje tylko 6 pętli for (nie liczyłem pętli wypisującej wynik), więc nasza złożoność wyniesie O(6n). Wykres jest niemalże identyczny jak w zadaniu
+N3. Intuicja podpowiada mi że jest to właściwy wynik ale nie jestem w stanie tego potwierdzić.
+                                                                                                

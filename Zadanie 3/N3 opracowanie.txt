@@ -1,0 +1,61 @@
+ZADANIE N3
+
+W programie należy rozwiązać układ równań z danymi zadanymi w macierzy:
+
+- h = 2/N
+- f(x) = 1/ (1 + 25x^2)
+- fk = f(xk)
+- xk = -1 +k*h
+
+Dla N = 1000
+
+---------------------
+Używając funkcji data obliczamy f(x):
+
+double data (int k){
+    double x = -1 + k*H;
+    return  (1/(1+(25* x*x))); 
+} 
+--------------------------
+W programie wykorzystałem algorytm Thomasa. Bazowałem się na rozpisce algorytmu dostępnej na wikipedii, stąd następujące zmienne:
+
+double d[N - 1]; - to wektor zawierający niewiadome f(N-2) - 2*f(N-1) + f(N)
+double c[N - 2]; - wektor elementów trójdiagonali nad diagonalą
+double u[N - 1]; - wektor z niewiadomymi u1 aż do u(N-1)
+--------------------------
+Nastepnie wywołujac 3 ktornie funkcję data zapełniamy wektor d niewiadomymi składającymi sie z x pomnożonymi dodatkowo przez 6/H*h:
+
+for(int i = 0; i < N - 1; i++){
+        d[i] = (6/(H*H))*(data(i) - 2*data(i+1) + data(i+2));
+    }
+--------------------------
+Nastepnie stosując się do algorytmu zapełniamy pierwsze pozycje dla wektorów c oraz d:
+
+c[0] = 1/4;
+d[0] = d[0] / 4;
+--------------------------
+Stosując się dalej do algorytmu Thomasa iterujemy aż do N-1 i wykonujemy działania dla elementów nad i pod diagonalą:
+
+ for ( int i = 1; i < N - 1; i++){
+        if(i < N - 2){
+
+        c[i] = 1/(4 - c[i-1]);
+
+        }
+        d[i] = (d[i] - d[i-1]) / (4 - c[i-1]);
+    }
+---------------------------------------------------
+Podstawiamy jeszcze ostatni element wektora wyrazów wolnych do ostatniego elementu wektora zmiennych
+
+u[N - 2] = d[N - 2];
+---------------------------------------------------
+Na sam koniec wykonujemy back substitution żeby uzyskać wszystkie wyniki:
+
+for(int i = N-3 ; i >= 0; i--){
+        u[i] = d[i] - c[i] * u[i+1];
+    }
+
+------------------------------------------
+Zgodnie z wiedzą z wikipedii oraz z wykładu, zastosowanie algorytmu Thomasa pozwala nam wykonać obliczenia ze złożonością O(n) a konkretnie dla tego programu wywołujemy 3 pętle for więc złożoność
+wynosi O(3n)
+                                                                                                
